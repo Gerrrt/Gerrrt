@@ -42,7 +42,7 @@ Three layers. One source of truth. No copy-paste.
 - **OS-native** — package manager, clipboard, paths. The only per-OS surface.
 - **Role** — offensive (Kali) and defensive (Defense) tradecraft on top.
 
-A green `make audit` gates every change before it's vendored out. Nothing ships red.
+A green `make audit` in [`dotfiles-core`](https://github.com/Gerrrt/dotfiles-core) gates every change before Core is vendored out. Nothing ships red.
 
 ---
 
