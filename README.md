@@ -1,13 +1,13 @@
 <div align="center">
 
-# How'r ya now? 👋
+# 👋
 
 ```text
 $ whoami
 red/blue operator · CLI craftsman · builder of an over-engineered terminal
 ```
 
-### One terminal. Ten machines. Zero drift. ⌨️
+### .files ⌨️
 
 I build a **cross-platform dotfiles fleet** — a unified Zsh · Neovim · Tmux
 environment that feels *identical* on macOS, Windows/WSL2, and a rack of Linux
@@ -60,7 +60,7 @@ A green `make audit` in [`dotfiles-core`](https://github.com/Gerrrt/dotfiles-cor
 
 ---
 
-### 🔴🔵 The part nobody else has
+### 🔴🔵 The part I think is kinda cool
 
 [**htpx**](https://github.com/Gerrrt/htpx) is a structured, **ATT&CK-tagged,
 red↔blue-*paired* corpus** — every attack technique sits beside its detection.
@@ -75,7 +75,6 @@ is not. That's the thing worth stealing.
 ### 📡 Reach me
 
 [![Email](https://img.shields.io/badge/email-garrettallen2-7aa2f7?style=flat-square&logo=gmail&logoColor=white)](mailto:garrettallen2@gmail.com)
-[![Showcase](https://img.shields.io/badge/site-dotfiles--web-9ece6a?style=flat-square)](https://gerrrt.github.io/dotfiles-web)
 
 <sub>Built to be stolen from. Or borrowed. Or… whatever.</sub>
 
