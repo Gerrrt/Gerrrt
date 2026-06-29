@@ -1,16 +1,48 @@
 <div align="center">
 
-# How'r ya now?
+# How'r ya now? 👋
 
-### One terminal experience. ⌨️
+```text
+$ whoami
+red/blue operator · CLI craftsman · builder of an over-engineered terminal
+```
 
-I'm building a **cross-platform dotfiles system** — a unified, drift-free
-Zsh · Neovim · Tmux setup that feels identical on **macOS** and **Windows/WSL2**,
-with optional red/blue security layers on top.
+### One terminal. Ten machines. Zero drift. ⌨️
 
-[![Showcase](https://img.shields.io/badge/▶-live_showcase-7aa2f7?style=for-the-badge)](https://gerrrt.github.io/dotfiles-web)
+I build a **cross-platform dotfiles fleet** — a unified Zsh · Neovim · Tmux
+environment that feels *identical* on macOS, Windows/WSL2, and a rack of Linux
+distros, with optional **red** (offensive) and **blue** (defensive) layers
+bolted on top.
+
+[![Live showcase](https://img.shields.io/badge/▶-live_showcase-7aa2f7?style=for-the-badge)](https://gerrrt.github.io/dotfiles-web)
+[![Core](https://img.shields.io/badge/core-vendored_everywhere-bb9af7?style=for-the-badge)](https://github.com/Gerrrt/dotfiles-core)
 
 </div>
+
+---
+
+### 🧬 The architecture (the part that makes it interesting)
+
+Three layers. One source of truth. No copy-paste.
+
+```text
+            ┌─────────────────────────┐
+            │      dotfiles-core      │   authored ONCE
+            │  zsh · nvim · tmux ·    │
+            │   git · starship        │
+            └────────────┬────────────┘
+                         │  git subtree  (vendored, self-contained)
+       ┌─────────┬───────┼───────┬─────────┐
+       ▼         ▼       ▼       ▼         ▼
+    macOS     Linux ×5  Kali 🔴  Defense 🔵  …each clone stands alone
+   (OS layer)         (role layer)
+```
+
+- **Core** — identical on every machine, authored once, fanned out via `git subtree`.
+- **OS-native** — package manager, clipboard, paths. The only per-OS surface.
+- **Role** — offensive (Kali) and defensive (Defense) tradecraft on top.
+
+A green `make audit` gates every change before it's vendored out. Nothing ships red.
 
 ---
 
@@ -28,6 +60,23 @@ with optional red/blue security layers on top.
 
 ---
 
+### 🔴🔵 The part nobody else has
+
+[**htpx**](https://github.com/Gerrrt/htpx) is a structured, **ATT&CK-tagged,
+red↔blue-*paired* corpus** — every attack technique sits beside its detection.
+One source of truth drives both the offensive cheatsheet *and* the purple-team
+detections. Fast modern-CLI configs are a commodity; a paired methodology corpus
+is not. That's the thing worth stealing.
+
+---
+
 <div align="center">
-<sub>Built to be stolen from. Or borrowed. Or... whatever.</sub>
+
+### 📡 Reach me
+
+[![Email](https://img.shields.io/badge/email-garrettallen2-7aa2f7?style=flat-square&logo=gmail&logoColor=white)](mailto:garrettallen2@gmail.com)
+[![Showcase](https://img.shields.io/badge/site-dotfiles--web-9ece6a?style=flat-square)](https://gerrrt.github.io/dotfiles-web)
+
+<sub>Built to be stolen from. Or borrowed. Or… whatever.</sub>
+
 </div>
