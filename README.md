@@ -1,11 +1,11 @@
-<div align="center">
-
 # 👋
 
 ```text
 $ whoami
 red/blue operator · CLI craftsman · builder of an over-engineered terminal
 ```
+
+<div align="center">
 
 ### .files ⌨️
 
