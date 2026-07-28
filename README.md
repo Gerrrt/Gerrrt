@@ -1,25 +1,22 @@
 <div align="center">
 
-# Garrett Allen &nbsp;·&nbsp; `Gerrrt`
-
-## 🛡️ U.S. Army · Warrant Officer (CW2)
-
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&pause=1200&color=7AA2F7&background=00000000&center=true&vCenter=true&width=720&lines=Offensive+Cyberspace+Operations+%E2%80%94+14+years;OSCP+%7C+Red+Team+%7C+Adversary+Emulation;Penetration+Testing+%7C+Ethical+Hacking;Now+expanding+into+Threat+Hunting)](https://github.com/Gerrrt)
-
-[![OCO](https://img.shields.io/badge/OCO-Offensive_Cyberspace_Operations-f7768e?style=for-the-badge)](#-operational-expertise)
-[![OSCP](https://img.shields.io/badge/OSCP-Certified-7aa2f7?style=for-the-badge&logo=offensivesecurity&logoColor=white)](#-certifications--education)
-[![Now](https://img.shields.io/badge/Now_expanding-Threat_Hunting-bb9af7?style=for-the-badge)](#-operational-expertise)
-![Profile views](https://komarev.com/ghpvc/?username=Gerrrt&label=Profile%20views&color=7aa2f7&style=for-the-badge)
+# Gerrrt 👋
 
 </div>
 
+```text
+$ whoami
+army cyber warrant officer · red teamer · writes crappy tools · breaks things... unintentionally
+```
+
+I'm a U.S. Army cyber warrant officer (**CW2 / 170A**) and I've spent about **14 years** 
+trying to figure out computers. These days that's mostly red teaming, 
+pentesting, and writing throwaway Python/Bash that makes the tedious 80% go faster.
+Lately I've been trying to figure out **threat hunting**.
+
 ---
 
-Active-Duty Warrant Officer with 14 years in the U.S. Army.
-
----
-
-### 🎯 Experience
+## 🎯 Experience
 
 | Discipline                                   | What that looks like                                                           |
 | :------------------------------------------- | :----------------------------------------------------------------------------- |
@@ -30,15 +27,9 @@ Active-Duty Warrant Officer with 14 years in the U.S. Army.
 
 ---
 
-### 🧬 Skills
+## 🧬 Skills
 
-Core toolkit:
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
-![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
-![C](https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+Languages I live in: `Python` · `Bash` · `PowerShell` · a little `C` · `Linux` everything.
 
 | ATT&CK Tactic                            | Tooling & techniques I operate                    |
 | :--------------------------------------- | :------------------------------------------------ |
@@ -56,52 +47,32 @@ Core toolkit:
 
 ---
 
-### 🎖️ Certifications & Education
+### 🎖️ Certs
 
-<div align="center">
-
-[![OSCP](https://img.shields.io/badge/OSCP-Offensive_Security_Certified_Professional-7aa2f7?style=for-the-badge&logo=offensivesecurity&logoColor=white)](https://www.credential.net/)
-
-</div>
-
-| Certification                                        | Issuer      | Notes                                                                                |
-| :--------------------------------------------------- | :---------- | :----------------------------------------------------------------------------------- |
-| **OSCP** — Offensive Security Certified Professional | OffSec      | 24-hour hands-on exploitation exam — the practical-red-team proof-of-work credential |
-| _DoD / baseline cybersecurity certifications_        | _(various)_ | Foundational credentials maintained under DoD 8140/8570                              |
-
-<!--
-  ↳ Swap the placeholder row for your actual baseline certs — same badge/table pattern, e.g.:
-  ![Security+](https://img.shields.io/badge/CompTIA-Security%2B-E4002B?style=for-the-badge&logo=comptia&logoColor=white)
--->
+**OSCP** — yeah, the 24-hour one. Plus the usual DoD baseline certs.
+<!-- swap in your real baseline certs / credential links here -->
 
 ---
 
-### 🗺️ Featured Work — the Dotfiles Fleet & htpx
+## 🗺️ Current Projects
 
-A **cross-platform dotfiles fleet**: one core component
-(`git subtree`–vendored everywhere) fanned out across macOS, Windows/WSL2, and
-five Linux distros, with **🔴 offensive** and **🔵 defensive** role layers.
-A green `make audit` gates every change before Core ships.
+| | Repo | What it is |
+|:--|:--|:--|
+| 👾 | **[dotgibson](https://github.com/Gerrrt/dotgibson)** | My whole dotfiles ecosystem — one authored-once core (`zsh` · `nvim` · `tmux`) vendored across macOS, Windows/WSL2 & five Linux distros, with 🔴 offensive and 🔵 defensive role layers bolted on |
+| 🧠 | **[htpx](https://github.com/Gerrrt/htpx)** | ATT&CK-tagged, **red↔blue-paired** methodology corpus — every technique beside its detection |
+| 🧪 | **[ezekiellabs](https://github.com/Gerrrt/ezekiellabs)** | Red/blue/purple team tooling — one tool so far: `opseclint` |
 
-|     | Repo                                                               | What it is                                                                                   |
-| :-- | :----------------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
-| 🧬  | **[dotfiles-core](https://github.com/Gerrrt/dotfiles-core)**       | Shared core — authored once, vendored everywhere                                             |
-| 🔴  | **[dotfiles-Kali](https://github.com/Gerrrt/dotfiles-Kali)**       | Offensive role layer — recon → exploit → evasion                                             |
-| 🔵  | **[dotfiles-Defense](https://github.com/Gerrrt/dotfiles-Defense)** | Defensive role layer — detection & hunt tooling                                              |
-| 🧠  | **[htpx](https://github.com/Gerrrt/htpx)**                         | ATT&CK-tagged, **red↔blue-paired** methodology corpus — every technique beside its detection |
-| 🌐  | **[dotfiles-web](https://github.com/Gerrrt/dotfiles-web)**         | Public showcase + docs site                                                                  |
-
-<sub>Full fleet — macOS · Windows · Arch · Fedora · openSUSE · Gentoo · Alpine — on my <a href="https://github.com/Gerrrt?tab=repositories">repositories</a>.</sub>
+<sub>Inside <b>dotgibson</b>: <a href="https://github.com/Gerrrt/dotfiles-core">core</a> · <a href="https://github.com/Gerrrt/dotfiles-Kali">Kali 🔴</a> · <a href="https://github.com/Gerrrt/dotfiles-Defense">Defense 🔵</a> · <a href="https://github.com/Gerrrt/dotfiles-web">web</a> · plus per-OS repos for macOS · Windows · Arch · Fedora · openSUSE · Gentoo · Alpine.</sub>
 
 ---
 
 ### 📊 GitHub Metrics
 
+<!-- Cards are fetched (themed), validated, and committed by .github/workflows/stat-cards.yml,
+     so GitHub serves real files instead of flaky live third-party cards. -->
 <div align="center">
-
-<img height="165" src="https://github-readme-stats.vercel.app/api?username=Gerrrt&show_icons=true&count_private=true&include_all_commits=true&hide_border=true&theme=tokyonight" alt="GitHub stats" />
-<img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Gerrrt&layout=compact&langs_count=8&hide_border=true&theme=tokyonight" alt="Top languages" />
-
+<img height="165" src="./github-stats.svg" alt="GitHub stats" />
+<img height="165" src="./github-langs.svg" alt="Top languages" />
 </div>
 
 ---
@@ -114,7 +85,5 @@ A green `make audit` gates every change before Core ships.
 
 <!-- Add when ready:
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](YOUR_LINKEDIN_URL) -->
-
-<sub><i>Understand the exploit to secure the future. · Built to be learned from.</i></sub>
 
 </div>
