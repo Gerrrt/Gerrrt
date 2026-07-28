@@ -2,7 +2,7 @@
 
 # Garrett Allen &nbsp;·&nbsp; `Gerrrt`
 
-## 🛡️ U.S. Army · Warrant Officer (CW2)· Cyber (170A)
+## 🛡️ U.S. Army · Warrant Officer (CW2)
 
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&pause=1200&color=7AA2F7&background=00000000&center=true&vCenter=true&width=720&lines=Offensive+Cyberspace+Operations+%E2%80%94+14+years;OSCP+%7C+Red+Team+%7C+Adversary+Emulation;Penetration+Testing+%7C+Ethical+Hacking;Now+expanding+into+Threat+Hunting)](https://github.com/Gerrrt)
 
@@ -15,26 +15,22 @@
 
 ---
 
-I am an Active-Duty Warrant Officer with over 14 years of service in the
-U.S. Army. I conduct **Offensive Cyberspace Operations (OCO)** at the tactical
-and operational edge. I turn adversary tradecraft into repeatable capability
-such as: engineering the recon-to-exploit pipelines, red-team infrastructure,
-and automation.
+Active-Duty Warrant Officer with 14 years in the U.S. Army.
 
 ---
 
-### 🎯 Operational Expertise
+### 🎯 Experience
 
-| Discipline                                   | What that looks like                                                                                                         |
-| :------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| 🔴 **Red Teaming & Adversary Emulation**     | Full-scope engagements, MITRE ATT&CK–mapped TTPs, defensive evasion, and disciplined post-exploitation tradecraft.           |
-| 🧩 **Penetration Testing**                   | Network, Active Directory, and application testing — OSCP-grade _manual_ exploitation over point-and-click scanning.         |
-| ⚙️ **Ethical Hacking & Weaponization**       | Purpose-built Python and Bash tooling that streamlines enumeration, exploitation, and reporting under real time constraints. |
-| 🔵 **Threat Hunting** _(actively expanding)_ | Turning offensive knowledge inward — building detections and hunts for the very TTPs I execute.                              |
+| Discipline                                   | What that looks like                                                           |
+| :------------------------------------------- | :----------------------------------------------------------------------------- |
+| 🔴 **Red Teaming**                           | Full-scope engagements, TTPs, defensive evasion, post-exploitation tradecraft. |
+| 🧩 **Penetration Testing**                   | Network, AD, and application testing.                                          |
+| ⚙️ **Ethical Hacking & Weaponization**       | Python and Bash enumeration tooling, exploitation, and reporting.              |
+| 🔵 **Threat Hunting** _(actively expanding)_ | Turning offensive knowledge inward and building detections.                    |
 
 ---
 
-### 🧬 Tradecraft, mapped to MITRE ATT&CK
+### 🧬 Skills
 
 Core toolkit:
 
@@ -55,7 +51,7 @@ Core toolkit:
 | **Command & Control**                    | `Metasploit` · C2 profile & infrastructure design |
 | **Detection (blue-side)**                | `Splunk` · `ELK` · Detection Engineering          |
 
-> **Tradecraft.** Everything I publish is sanitized, and
+> Everything I publish is sanitized, and
 > built to be understood by blue and red teams.
 
 ---
@@ -82,9 +78,9 @@ Core toolkit:
 
 ### 🗺️ Featured Work — the Dotfiles Fleet & htpx
 
-A production-grade, **cross-platform dotfiles fleet**: one authored-once core
+A **cross-platform dotfiles fleet**: one core component
 (`git subtree`–vendored everywhere) fanned out across macOS, Windows/WSL2, and
-five Linux distros, with bolt-on **🔴 offensive** and **🔵 defensive** role layers.
+five Linux distros, with **🔴 offensive** and **🔵 defensive** role layers.
 A green `make audit` gates every change before Core ships.
 
 |     | Repo                                                               | What it is                                                                                   |
