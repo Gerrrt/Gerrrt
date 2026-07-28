@@ -1,0 +1,78 @@
+name: Stat cards
+
+# Fetches the GitHub stats + top-languages cards with a Tokyo Night palette baked
+# in, validates them, and commits the SVGs into the repo. GitHub then serves real
+# files, so viewers never see a broken third-party card. The flaky live service is
+# only touched here at build time — with retries and validation — never by readers.
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "github-stats.svg"
+      - "github-langs.svg"
+
+permissions:
+  contents: write
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch themed stat cards
+        env:
+          # Tokyo Night palette
+          BG: "1a1b26"
+          TITLE: "7aa2f7"
+          ICON: "bb9af7"
+          TEXT: "c0caf5"
+        run: |
+          set -euo pipefail
+
+          # fetch <url> <output>: retry a few times, only accept a real SVG.
+          fetch() {
+            url="$1"; out="$2"
+            for i in 1 2 3 4 5; do
+              code=$(curl -sS -A "gerrrt-readme-bot" -w '%{http_code}' -o "$out.tmp" "$url" || echo 000)
+              if [ "$code" = "200" ] && grep -q '</svg>' "$out.tmp" \
+                 && ! grep -qi 'Something went wrong' "$out.tmp"; then
+                mv "$out.tmp" "$out"
+                echo "refreshed $out"
+                return 0
+              fi
+              echo "attempt $i for $out failed (http $code); retrying..."
+              sleep $((i * 5))
+            done
+            echo "::warning::could not refresh $out; keeping the existing committed file"
+            rm -f "$out.tmp"
+            return 0
+          }
+
+          base="https://github-readme-stats.vercel.app/api"
+          common="hide_border=true&bg_color=${BG}&title_color=${TITLE}&text_color=${TEXT}"
+
+          fetch "${base}?username=Gerrrt&show_icons=true&count_private=true&include_all_commits=true&icon_color=${ICON}&${common}" github-stats.svg
+          fetch "${base}/top-langs/?username=Gerrrt&layout=compact&langs_count=8&${common}" github-langs.svg
+
+      - name: Commit refreshed cards
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          files=""
+          [ -f github-stats.svg ] && files="$files github-stats.svg"
+          [ -f github-langs.svg ] && files="$files github-langs.svg"
+          [ -n "$files" ] || { echo "no card files present; nothing to commit"; exit 0; }
+
+          git add $files
+          if git diff --cached --quiet; then
+            echo "cards unchanged"
+          else
+            git commit -m "chore: refresh stat cards [skip ci]"
+            git push
+          fi
