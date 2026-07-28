@@ -49,7 +49,7 @@ Languages I live in: `Python` · `Bash` · `PowerShell` · a little `C` · `Linu
 
 ### 🎖️ Certs
 
-**OSCP** — yeah, the 24-hour one. Plus the usual DoD baseline certs.
+**OSCP** — May 2019
 <!-- swap in your real baseline certs / credential links here -->
 
 ---
@@ -58,11 +58,11 @@ Languages I live in: `Python` · `Bash` · `PowerShell` · a little `C` · `Linu
 
 | | Repo | What it is |
 |:--|:--|:--|
-| 👾 | **[dotgibson](https://github.com/Gerrrt/dotgibson)** | My whole dotfiles ecosystem — one authored-once core (`zsh` · `nvim` · `tmux`) vendored across macOS, Windows/WSL2 & five Linux distros, with 🔴 offensive and 🔵 defensive role layers bolted on |
-| 🧠 | **[htpx](https://github.com/Gerrrt/htpx)** | ATT&CK-tagged, **red↔blue-paired** methodology corpus — every technique beside its detection |
-| 🧪 | **[ezekiellabs](https://github.com/Gerrrt/ezekiellabs)** | Red/blue/purple team tooling — one tool so far: `opseclint` |
+| 👾 | **[dotgibson](https://github.com/dotgibson)** | My whole dotfiles ecosystem — one authored-once core (`zsh` · `nvim` · `tmux`) vendored across macOS, Windows/WSL2 & five Linux distros, with 🔴 offensive and 🔵 defensive role layers bolted on |
+| 🧠 | **[htpx](https://github.com/dotgibson/htpx)** | ATT&CK-tagged, **red↔blue-paired** methodology corpus — every technique beside its detection |
+| 🧪 | **[ezekiellabs](https://github.com/ezekiellabs)** | Red/blue/purple team tooling — one tool so far: `opseclint` |
 
-<sub>Inside <b>dotgibson</b>: <a href="https://github.com/Gerrrt/dotfiles-core">core</a> · <a href="https://github.com/Gerrrt/dotfiles-Kali">Kali 🔴</a> · <a href="https://github.com/Gerrrt/dotfiles-Defense">Defense 🔵</a> · <a href="https://github.com/Gerrrt/dotfiles-web">web</a> · plus per-OS repos for macOS · Windows · Arch · Fedora · openSUSE · Gentoo · Alpine.</sub>
+<sub>Inside <b>dotgibson</b>: <a href="https://github.com/dotgibson/dotfiles-core">core</a> · <a href="https://github.com/dotgibson/dotfiles-Kali">Kali 🔴</a> · <a href="https://github.com/dotgibson/dotfiles-Defense">Defense 🔵</a> · <a href="https://github.com/dotgibson/dotfiles-web">web</a> · plus per-OS repos for macOS · Windows · Arch · Fedora · openSUSE · Gentoo · Alpine.</sub>
 
 ---
 
@@ -82,8 +82,6 @@ Languages I live in: `Python` · `Bash` · `PowerShell` · a little `C` · `Linu
 ### 📡 Reach Me
 
 [![Email](https://img.shields.io/badge/email-garrettallen2-7aa2f7?style=for-the-badge&logo=gmail&logoColor=white)](mailto:garrettallen2@gmail.com)
-
-<!-- Add when ready:
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](YOUR_LINKEDIN_URL) -->
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/garrettallen2/)
 
 </div>
