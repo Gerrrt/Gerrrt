@@ -1,9 +1,10 @@
 name: Stat cards
 
-# Renders GitHub stats + language SVGs with jstrieb/github-stats — a prebuilt
-# binary that talks straight to GitHub's API, so there's no third-party card
-# service to 503 on. Its SVGs auto-adapt to light/dark and are committed into
-# images/, so GitHub serves real files. Runs daily, on demand, and on push to main.
+# Fetches the GitHub stats + top-languages cards from github-readme-stats with a
+# Tokyo Night palette baked in, validates them, and commits the SVGs into images/.
+# GitHub then serves real committed files, so viewers never hit the live service.
+# If the (free) service is briefly down, we keep the last-good committed card and
+# still succeed — the profile is never left broken by a transient outage.
 on:
   schedule:
     - cron: "0 6 * * *"
@@ -17,53 +18,63 @@ permissions:
   contents: write
 
 jobs:
-  stats:
+  cards:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout profile repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Download github-stats binary
-        run: |
-          set -euo pipefail
-          curl -fL --retry 3 --retry-delay 5 -o github-stats \
-            https://github.com/jstrieb/github-stats/releases/latest/download/github-stats_x86_64-linux
-          chmod +x github-stats
-
-      - name: Generate stat SVGs
+      - name: Fetch themed stat cards
         env:
-          # Classic PAT (scopes: repo, read:user, user:email) stored as GH_STATS_TOKEN.
-          ACCESS_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
-          # Matches jstrieb's own known-good workflow config. EXCLUDE_PRIVATE=false
-          # includes private contributions as aggregate numbers only (never repo names).
-          EXCLUDE_PRIVATE: "false"
-          SILENT: "false"
-          MAX_RETRIES: "5"
-        run: |
-          set -euo pipefail
-          ./github-stats --debug
-          echo "=== SVGs produced ==="
-          find . -name '*.svg' -not -path './images/*'
-
-      - name: Publish into images/
+          # Tokyo Night palette
+          BG: "1a1b26"
+          TITLE: "7aa2f7"
+          ICON: "bb9af7"
+          TEXT: "c0caf5"
         run: |
           set -euo pipefail
           mkdir -p images
-          ov=$(find . -name overview.svg  -not -path './images/*' | head -n1)
-          lg=$(find . -name languages.svg -not -path './images/*' | head -n1)
-          echo "overview=$ov  languages=$lg"
-          cp "$ov" images/overview.svg
-          cp "$lg" images/languages.svg
 
-      - name: Commit refreshed stats
+          # fetch <url> <output>: retry a few times; only accept a real SVG,
+          # otherwise leave the existing committed file untouched.
+          fetch() {
+            url="$1"; out="$2"
+            for i in 1 2 3 4 5; do
+              code=$(curl -sS -A "gerrrt-readme-bot" -w '%{http_code}' -o "$out.tmp" "$url" || echo 000)
+              if [ "$code" = "200" ] && grep -q '</svg>' "$out.tmp" \
+                 && ! grep -qi 'Something went wrong' "$out.tmp"; then
+                mv "$out.tmp" "$out"
+                echo "refreshed $out"
+                return 0
+              fi
+              echo "attempt $i for $out failed (http $code); retrying..."
+              sleep $((i * 5))
+            done
+            echo "::warning::could not refresh $out; keeping the existing committed file"
+            rm -f "$out.tmp"
+            return 0
+          }
+
+          base="https://github-readme-stats.vercel.app/api"
+          common="hide_border=true&bg_color=${BG}&title_color=${TITLE}&text_color=${TEXT}"
+
+          fetch "${base}?username=Gerrrt&show_icons=true&count_private=true&include_all_commits=true&icon_color=${ICON}&${common}" images/github-stats.svg
+          fetch "${base}/top-langs/?username=Gerrrt&layout=compact&langs_count=8&${common}" images/github-langs.svg
+
+      - name: Commit refreshed cards
         run: |
           set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add images/overview.svg images/languages.svg
+
+          files=""
+          [ -f images/github-stats.svg ] && files="$files images/github-stats.svg"
+          [ -f images/github-langs.svg ] && files="$files images/github-langs.svg"
+          [ -n "$files" ] || { echo "no card files present yet; nothing to commit"; exit 0; }
+
+          git add $files
           if git diff --cached --quiet; then
-            echo "stats unchanged"
+            echo "cards unchanged"
           else
-            git commit -m "chore: refresh stats [skip ci]"
+            git commit -m "chore: refresh stat cards [skip ci]"
             git push
           fi
