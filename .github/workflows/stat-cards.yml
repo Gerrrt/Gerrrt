@@ -36,7 +36,9 @@ jobs:
           python-version: "3.12"
 
       - name: Install generator deps
-        run: pip install --no-cache-dir -r .stats-generator/requirements.txt
+        # jstrieb/github-stats ships a Pipfile (pipenv), not requirements.txt —
+        # install its runtime dependencies directly.
+        run: pip install --no-cache-dir aiohttp requests
 
       - name: Generate stat SVGs
         working-directory: .stats-generator
