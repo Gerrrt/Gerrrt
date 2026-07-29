@@ -4,8 +4,15 @@ name: Metrics
 # GitHub's API inside the Action (no third-party card service to be down) and
 # commits github-metrics.svg into the repo, which GitHub then serves directly.
 #
-# - token is the built-in GITHUB_TOKEN, which can only see PUBLIC data, so the
-#   card shows public contributions only (no private aggregates).
+# - Data is fetched with a PAT (secrets.METRICS_TOKEN) so the card can reach
+#   beyond the handful of repos the Gerrrt account personally owns and include
+#   repos in orgs/accounts Gerrrt belongs to (dotgibson, ezekiellabs). If that
+#   secret is not set it falls back to the built-in GITHUB_TOKEN (public data
+#   for the Gerrrt account only) so the workflow still succeeds.
+#   The PAT must be a classic token with `repo` + `read:org` scopes, and Gerrrt
+#   must be owner/member/collaborator on the repos to be counted.
+# - Commits are made with the built-in GITHUB_TOKEN so the refresh commit is
+#   authored by github-actions, not the PAT owner.
 # - extras_css paints the card in a Tokyo Night dark palette.
 on:
   schedule:
@@ -26,14 +33,20 @@ jobs:
       - name: Generate metrics
         uses: lowlighter/metrics@latest
         with:
-          # Built-in token → public data only, and can still commit (contents: write).
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # PAT for data (reaches org/collaborator repos); built-in token for the
+          # commit. Falls back to the built-in token if METRICS_TOKEN is unset.
+          token: ${{ secrets.METRICS_TOKEN || secrets.GITHUB_TOKEN }}
+          committer_token: ${{ secrets.GITHUB_TOKEN }}
           user: Gerrrt
 
           filename: github-metrics.svg
           output_action: commit
           committer_branch: main
           committer_message: "chore: refresh github metrics [skip ci]"
+
+          # Count repos Gerrrt owns, collaborates on, or shares an org with —
+          # not just personally-owned ones (needs the PAT's repo + read:org scopes).
+          repositories_affiliations: owner, collaborator, organization_member
 
           base: header, activity, community, repositories, metadata
           config_timezone: America/New_York
@@ -50,5 +63,5 @@ jobs:
             .field { color: #c0caf5 !important; }
             .field svg { fill: #7aa2f7; }
             small, .field.language.details small, .field.license.details small { color: #a9b1d6 !important; }
-            footer, footer * { color: #565f89 !important; }
+            footer, footer div, footer span, footer a { color: #565f89 !important; }
             .calendar .day { outline-color: rgba(255,255,255,0.06) !important; }
