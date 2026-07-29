@@ -17,6 +17,11 @@ on:
 permissions:
   contents: write
 
+# A new run cancels an in-flight one (e.g. one stuck retrying a slow service).
+concurrency:
+  group: stat-cards
+  cancel-in-progress: true
+
 jobs:
   cards:
     runs-on: ubuntu-latest
@@ -39,7 +44,7 @@ jobs:
           fetch() {
             url="$1"; out="$2"
             for i in 1 2 3 4 5; do
-              code=$(curl -sS -A "gerrrt-readme-bot" -w '%{http_code}' -o "$out.tmp" "$url" || echo 000)
+              code=$(curl -sS -A "gerrrt-readme-bot" --connect-timeout 10 --max-time 25 -w '%{http_code}' -o "$out.tmp" "$url" || echo 000)
               if [ "$code" = "200" ] && grep -q '</svg>' "$out.tmp" \
                  && ! grep -qi 'Something went wrong' "$out.tmp"; then
                 mv "$out.tmp" "$out"
