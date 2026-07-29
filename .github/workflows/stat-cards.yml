@@ -26,6 +26,15 @@ on:
 permissions:
   contents: write
 
+# Serialize runs: the card commits github-metrics.svg to main, so two runs
+# overlapping (e.g. a manual/dispatch run racing the push run from a merge, or
+# the daily schedule) both try to commit and the loser fails with
+# "github-metrics.svg does not match <sha>". One run at a time avoids that; the
+# in-progress one is cancelled since a newer run supersedes it.
+concurrency:
+  group: metrics
+  cancel-in-progress: true
+
 jobs:
   metrics:
     runs-on: ubuntu-latest
