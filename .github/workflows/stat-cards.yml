@@ -48,6 +48,16 @@ jobs:
           # not just personally-owned ones (needs the PAT's repo + read:org scopes).
           repositories_affiliations: owner, collaborator, organization_member
 
+          # Exclude private repos from the card. metrics has no "public only"
+          # toggle, so private repos are listed explicitly here (applies to every
+          # plugin, including the language breakdown). These are the private repos
+          # that were skewing the language bar with PHP/PowerShell. If a new
+          # private repo is created, add it here too.
+          repositories_skipped: |
+            Gerrrt/Lemmiwinks
+            Gerrrt/secctbt-site
+            Gerrrt/PEN300
+
           base: header, activity, community, repositories, metadata
           config_timezone: America/New_York
           plugin_languages: yes
