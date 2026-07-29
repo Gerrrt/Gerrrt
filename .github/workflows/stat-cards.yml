@@ -34,14 +34,14 @@ jobs:
         env:
           # Classic PAT (scopes: repo, read:user, user:email) stored as GH_STATS_TOKEN.
           ACCESS_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
-          # Public contributions only. Set to "false" to include private ones
-          # (aggregate numbers only — private repo names are never shown).
-          EXCLUDE_PRIVATE: "true"
-          SILENT: "true"
+          # Matches jstrieb's own known-good workflow config. EXCLUDE_PRIVATE=false
+          # includes private contributions as aggregate numbers only (never repo names).
+          EXCLUDE_PRIVATE: "false"
+          SILENT: "false"
           MAX_RETRIES: "5"
         run: |
           set -euo pipefail
-          ./github-stats
+          ./github-stats --debug
           echo "=== SVGs produced ==="
           find . -name '*.svg' -not -path './images/*'
 
