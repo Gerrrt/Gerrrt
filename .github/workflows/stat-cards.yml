@@ -1,9 +1,9 @@
 name: Stat cards
 
-# Renders the GitHub stats + language SVGs INSIDE the Action, straight from
-# GitHub's API (jstrieb/github-stats). There is no third-party card service in
-# the loop, so there's nothing to 503 on — the generated SVGs are committed into
-# images/ and served by GitHub itself. Runs daily, on demand, and on pushes to main.
+# Renders GitHub stats + language SVGs with jstrieb/github-stats — a prebuilt
+# binary that talks straight to GitHub's API, so there's no third-party card
+# service to 503 on. Its SVGs auto-adapt to light/dark and are committed into
+# images/, so GitHub serves real files. Runs daily, on demand, and on push to main.
 on:
   schedule:
     - cron: "0 6 * * *"
@@ -23,38 +23,37 @@ jobs:
       - name: Checkout profile repo
         uses: actions/checkout@v4
 
-      - name: Checkout stats generator
-        uses: actions/checkout@v4
-        with:
-          repository: jstrieb/github-stats
-          ref: master
-          path: .stats-generator
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install generator deps
-        # jstrieb/github-stats ships a Pipfile (pipenv), not requirements.txt —
-        # install its runtime dependencies directly.
-        run: pip install --no-cache-dir aiohttp requests
+      - name: Download github-stats binary
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --retry-delay 5 -o github-stats \
+            https://github.com/jstrieb/github-stats/releases/latest/download/github-stats_x86_64-linux
+          chmod +x github-stats
 
       - name: Generate stat SVGs
-        working-directory: .stats-generator
         env:
-          # Classic PAT (scopes: repo, read:user) stored as the GH_STATS_TOKEN secret.
-          # This is the one manual step — see the setup notes.
+          # Classic PAT (scopes: repo, read:user, user:email) stored as GH_STATS_TOKEN.
           ACCESS_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
-          GITHUB_ACTOR: Gerrrt
-          EXCLUDE_FORKED_REPOS: "true"
-        run: python generate_images.py
+          # Public contributions only. Set to "false" to include private ones
+          # (aggregate numbers only — private repo names are never shown).
+          EXCLUDE_PRIVATE: "true"
+          SILENT: "true"
+          MAX_RETRIES: "5"
+        run: |
+          set -euo pipefail
+          ./github-stats
+          echo "=== SVGs produced ==="
+          find . -name '*.svg' -not -path './images/*'
 
       - name: Publish into images/
         run: |
+          set -euo pipefail
           mkdir -p images
-          cp .stats-generator/generated/overview.svg  images/overview.svg
-          cp .stats-generator/generated/languages.svg images/languages.svg
+          ov=$(find . -name overview.svg  -not -path './images/*' | head -n1)
+          lg=$(find . -name languages.svg -not -path './images/*' | head -n1)
+          echo "overview=$ov  languages=$lg"
+          cp "$ov" images/overview.svg
+          cp "$lg" images/languages.svg
 
       - name: Commit refreshed stats
         run: |
