@@ -68,11 +68,13 @@ Languages I live in: `Python` · `Bash` · `PowerShell` · a little `C` · `Linu
 
 ### 📊 GitHub Metrics
 
-<!-- Cards are fetched (themed), validated, and committed by .github/workflows/stat-cards.yml,
-     so GitHub serves real files instead of flaky live third-party cards. -->
+<!-- SVGs are rendered from GitHub's API by .github/workflows/stat-cards.yml
+     (jstrieb/github-stats) and committed into images/ — GitHub serves real files,
+     no third-party card service to break. -->
 <div align="center">
-<img height="165" src="./github-stats.svg" alt="GitHub stats" />
-<img height="165" src="./github-langs.svg" alt="Top languages" />
+<img src="./images/overview.svg" alt="GitHub stats" />
+<br/>
+<img src="./images/languages.svg" alt="Language breakdown" />
 </div>
 
 ---

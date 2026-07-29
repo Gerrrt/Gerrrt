@@ -1,9 +1,9 @@
 name: Stat cards
 
-# Fetches the GitHub stats + top-languages cards with a Tokyo Night palette baked
-# in, validates them, and commits the SVGs into the repo. GitHub then serves real
-# files, so viewers never see a broken third-party card. The flaky live service is
-# only touched here at build time — with retries and validation — never by readers.
+# Renders the GitHub stats + language SVGs INSIDE the Action, straight from
+# GitHub's API (jstrieb/github-stats). There is no third-party card service in
+# the loop, so there's nothing to 503 on — the generated SVGs are committed into
+# images/ and served by GitHub itself. Runs daily, on demand, and on pushes to main.
 on:
   schedule:
     - cron: "0 6 * * *"
@@ -11,68 +11,58 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - "github-stats.svg"
-      - "github-langs.svg"
+      - "images/**"
 
 permissions:
   contents: write
 
 jobs:
-  cards:
+  stats:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout profile repo
+        uses: actions/checkout@v4
 
-      - name: Fetch themed stat cards
+      - name: Checkout stats generator
+        uses: actions/checkout@v4
+        with:
+          repository: jstrieb/github-stats
+          ref: master
+          path: .stats-generator
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install generator deps
+        run: pip install --no-cache-dir -r .stats-generator/requirements.txt
+
+      - name: Generate stat SVGs
+        working-directory: .stats-generator
         env:
-          # Tokyo Night palette
-          BG: "1a1b26"
-          TITLE: "7aa2f7"
-          ICON: "bb9af7"
-          TEXT: "c0caf5"
+          # Classic PAT (scopes: repo, read:user) stored as the GH_STATS_TOKEN secret.
+          # This is the one manual step — see the setup notes.
+          ACCESS_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
+          GITHUB_ACTOR: Gerrrt
+          EXCLUDE_FORKED_REPOS: "true"
+        run: python generate_images.py
+
+      - name: Publish into images/
         run: |
-          set -euo pipefail
+          mkdir -p images
+          cp .stats-generator/generated/overview.svg  images/overview.svg
+          cp .stats-generator/generated/languages.svg images/languages.svg
 
-          # fetch <url> <output>: retry a few times, only accept a real SVG.
-          fetch() {
-            url="$1"; out="$2"
-            for i in 1 2 3 4 5; do
-              code=$(curl -sS -A "gerrrt-readme-bot" -w '%{http_code}' -o "$out.tmp" "$url" || echo 000)
-              if [ "$code" = "200" ] && grep -q '</svg>' "$out.tmp" \
-                 && ! grep -qi 'Something went wrong' "$out.tmp"; then
-                mv "$out.tmp" "$out"
-                echo "refreshed $out"
-                return 0
-              fi
-              echo "attempt $i for $out failed (http $code); retrying..."
-              sleep $((i * 5))
-            done
-            echo "::warning::could not refresh $out; keeping the existing committed file"
-            rm -f "$out.tmp"
-            return 0
-          }
-
-          base="https://github-readme-stats.vercel.app/api"
-          common="hide_border=true&bg_color=${BG}&title_color=${TITLE}&text_color=${TEXT}"
-
-          fetch "${base}?username=Gerrrt&show_icons=true&count_private=true&include_all_commits=true&icon_color=${ICON}&${common}" github-stats.svg
-          fetch "${base}/top-langs/?username=Gerrrt&layout=compact&langs_count=8&${common}" github-langs.svg
-
-      - name: Commit refreshed cards
+      - name: Commit refreshed stats
         run: |
           set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          files=""
-          [ -f github-stats.svg ] && files="$files github-stats.svg"
-          [ -f github-langs.svg ] && files="$files github-langs.svg"
-          [ -n "$files" ] || { echo "no card files present; nothing to commit"; exit 0; }
-
-          git add $files
+          git add images/overview.svg images/languages.svg
           if git diff --cached --quiet; then
-            echo "cards unchanged"
+            echo "stats unchanged"
           else
-            git commit -m "chore: refresh stat cards [skip ci]"
+            git commit -m "chore: refresh stats [skip ci]"
             git push
           fi
