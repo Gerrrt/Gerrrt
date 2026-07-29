@@ -48,15 +48,24 @@ jobs:
           # not just personally-owned ones (needs the PAT's repo + read:org scopes).
           repositories_affiliations: owner, collaborator, organization_member
 
-          # Exclude private repos from the card. metrics has no "public only"
-          # toggle, so private repos are listed explicitly here (applies to every
-          # plugin, including the language breakdown). These are the private repos
-          # that were skewing the language bar with PHP/PowerShell. If a new
-          # private repo is created, add it here too.
+          # Exclude repos that don't reflect Gerrrt's own public work. metrics
+          # has no "public only" or "no forks" toggle, so these are listed
+          # explicitly (applies to every plugin, including the language
+          # breakdown). Add new private repos / forks here as they appear.
+          # First block: private repos (were skewing the bar with PHP/PowerShell).
+          # Second block: forks (upstream code, not Gerrrt's own).
           repositories_skipped: |
             Gerrrt/Lemmiwinks
             Gerrrt/secctbt-site
             Gerrrt/PEN300
+            Gerrrt/sigma
+            Gerrrt/psmux
+            Gerrrt/dotfiles
+            Gerrrt/awesome-detection-engineering
+            Gerrrt/awesome-security
+            Gerrrt/awesome-threat-detection
+            Gerrrt/awesome-rust
+            Gerrrt/awesome-cybersecurity-blueteam
 
           base: header, activity, community, repositories, metadata
           config_timezone: America/New_York
