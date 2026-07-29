@@ -61,12 +61,14 @@ jobs:
           # has no "public only" or "no forks" toggle, so these are listed
           # explicitly (applies to every plugin, including the language
           # breakdown). Add new private repos / forks here as they appear.
-          # First block: private repos (were skewing the bar with PHP/PowerShell).
+          # First block: private repos (were skewing the bar with PHP/PowerShell);
+          # includes org-owned private repos, not just Gerrrt/*.
           # Second block: forks (upstream code, not Gerrrt's own).
           repositories_skipped: |
             Gerrrt/Lemmiwinks
             Gerrrt/secctbt-site
             Gerrrt/PEN300
+            dotgibson/.github-private
             Gerrrt/sigma
             Gerrrt/psmux
             Gerrrt/dotfiles
