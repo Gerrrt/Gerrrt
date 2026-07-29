@@ -68,11 +68,10 @@ Languages I live in: `Python` · `Bash` · `PowerShell` · a little `C` · `Linu
 
 ### 📊 GitHub Metrics
 
-<!-- Themed cards fetched, validated, and committed by .github/workflows/stat-cards.yml.
-     GitHub serves these committed SVGs directly, so viewers never hit a live service. -->
+<!-- Rendered inside the Action by lowlighter/metrics (.github/workflows/stat-cards.yml)
+     and committed as github-metrics.svg, so GitHub serves a real file directly. -->
 <div align="center">
-<img height="165" src="./images/github-stats.svg" alt="GitHub stats" />
-<img height="165" src="./images/github-langs.svg" alt="Top languages" />
+<img src="./github-metrics.svg" alt="GitHub metrics" />
 </div>
 
 ---

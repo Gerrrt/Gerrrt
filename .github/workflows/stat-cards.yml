@@ -1,10 +1,8 @@
-name: Stat cards
+name: Metrics
 
-# Fetches the GitHub stats + top-languages cards from github-readme-stats with a
-# Tokyo Night palette baked in, validates them, and commits the SVGs into images/.
-# GitHub then serves real committed files, so viewers never hit the live service.
-# If the (free) service is briefly down, we keep the last-good committed card and
-# still succeed — the profile is never left broken by a transient outage.
+# Renders a GitHub metrics SVG with lowlighter/metrics. It talks straight to
+# GitHub's API inside the Action (no third-party card service to be down) and
+# commits github-metrics.svg into the repo, which GitHub then serves directly.
 on:
   schedule:
     - cron: "0 6 * * *"
@@ -12,74 +10,31 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - "images/**"
+      - "github-metrics.svg"
 
 permissions:
   contents: write
 
-# A new run cancels an in-flight one (e.g. one stuck retrying a slow service).
-concurrency:
-  group: stat-cards
-  cancel-in-progress: true
-
 jobs:
-  cards:
+  metrics:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Generate metrics
+        uses: lowlighter/metrics@latest
+        with:
+          # Classic PAT (scopes: repo, read:user) stored as GH_STATS_TOKEN.
+          token: ${{ secrets.GH_STATS_TOKEN }}
+          user: Gerrrt
+          filename: github-metrics.svg
 
-      - name: Fetch themed stat cards
-        env:
-          # Tokyo Night palette
-          BG: "1a1b26"
-          TITLE: "7aa2f7"
-          ICON: "bb9af7"
-          TEXT: "c0caf5"
-        run: |
-          set -euo pipefail
-          mkdir -p images
+          # Commit the rendered SVG back to main.
+          output_action: commit
+          committer_branch: main
+          committer_message: "chore: refresh github metrics [skip ci]"
 
-          # fetch <url> <output>: retry a few times; only accept a real SVG,
-          # otherwise leave the existing committed file untouched.
-          fetch() {
-            url="$1"; out="$2"
-            for i in 1 2 3 4 5; do
-              code=$(curl -sS -A "gerrrt-readme-bot" --connect-timeout 10 --max-time 25 -w '%{http_code}' -o "$out.tmp" "$url" || echo 000)
-              if [ "$code" = "200" ] && grep -q '</svg>' "$out.tmp" \
-                 && ! grep -qi 'Something went wrong' "$out.tmp"; then
-                mv "$out.tmp" "$out"
-                echo "refreshed $out"
-                return 0
-              fi
-              echo "attempt $i for $out failed (http $code); retrying..."
-              sleep $((i * 5))
-            done
-            echo "::warning::could not refresh $out; keeping the existing committed file"
-            rm -f "$out.tmp"
-            return 0
-          }
-
-          base="https://github-readme-stats.vercel.app/api"
-          common="hide_border=true&bg_color=${BG}&title_color=${TITLE}&text_color=${TEXT}"
-
-          fetch "${base}?username=Gerrrt&show_icons=true&count_private=true&include_all_commits=true&icon_color=${ICON}&${common}" images/github-stats.svg
-          fetch "${base}/top-langs/?username=Gerrrt&layout=compact&langs_count=8&${common}" images/github-langs.svg
-
-      - name: Commit refreshed cards
-        run: |
-          set -euo pipefail
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          files=""
-          [ -f images/github-stats.svg ] && files="$files images/github-stats.svg"
-          [ -f images/github-langs.svg ] && files="$files images/github-langs.svg"
-          [ -n "$files" ] || { echo "no card files present yet; nothing to commit"; exit 0; }
-
-          git add $files
-          if git diff --cached --quiet; then
-            echo "cards unchanged"
-          else
-            git commit -m "chore: refresh stat cards [skip ci]"
-            git push
-          fi
+          # Content.
+          base: header, activity, community, repositories, metadata
+          config_timezone: America/New_York
+          plugin_languages: yes
+          plugin_languages_details: bytes-size, percentage
+          plugin_languages_limit: 8
